@@ -785,3 +785,36 @@ Stores payment data (card, bank) for users or orgs. Distinguishes personal from 
 
 Below is a **high-level** depiction of how these tables interact:
 
+Potentially a star schema diagram or most likely an ERD (entity relationship diagram):
+
+
+### **Relationship Highlights**
+1. **Users - User_Profiles**: 1-to-1 extension of user info.  
+2. **Users - User_Roles** - Roles**: Many-to-many via user_roles.  
+3. **Organizations - Team_Members** - Users**: Many-to-many with extra fields for org role.  
+4. **Subscription_Plans - Subscriptions**: 1-to-many, a plan can have many active subs.  
+5. **Subscriptions - Billing_History**: 1-to-many, each sub can have multiple transactions.  
+6. **user_id** or **organization_id** used in many places (API_Keys, Model_Access_Permissions, etc.) to handle personal vs. enterprise usage.
+
+---
+
+# **Conclusion**
+
+This **structured data model** for the Artintel LM platform addresses:
+- **Core authentication** (Users & Profiles).
+- **Enterprise readiness** (Organizations, Team Members).
+- **RBAC** for fine-grained security (Roles, Permissions, etc.).
+- **Monetization** with subscription management & billing history.
+- **Advanced logging** (API usage, auth logs, security audit).
+- **Scalability & compliance** via partitioning, archiving, encryption, indexing, and monitoring strategies.
+
+As the platform **scales**, iterative refinements will integrate advanced HPC cost tracking, further logging expansions, and new compliance or enterprise demands. The separation of concerns, robust foreign key relationships, and flexible JSON columns ensure the system can adapt quickly to evolving AI model usage and business rules.
+
+> **Next Steps**:  
+> 1. **Implemented** core tables (`users`, `user_profiles`) for immediate authentication and identity.  
+> 2. **Gradually** add the additional tables (organizations, RBAC, subscriptions, logs) as needed.  
+> 3. **Partition & Archive** large log tables (api_usage, auth_logs) to maintain performance.  
+> 4. **Encrypt** sensitive columns, especially for production compliance.  
+> 5. **Monitor** DB usage to optimize queries and indexes proactively.
+
+This document will undergo regular updates as new requirements arise or usage patterns reveal performance/feature gaps. By following the best practices outlined, Artintel LM can maintain a secure, scalable, and feature-rich data backbone for AI model orchestration.
